@@ -77,7 +77,7 @@ def get_num_of_pods(node_name):
             else:
                 return None, f"Error: {res['error']}"
         else:
-            return f"Error: {response.status_code}"
+            return None, f"Error: {response.status_code}"
     except Exception as e:
         return None, e
 
@@ -234,7 +234,7 @@ def sample_cpu():
 
             # Retrieve pod count for the node
             pod_count, _ = get_num_of_pods(node)
-            total_pods_count += pod_count
+            total_pods_count += pod_count or 0
 
             logging.info(f"Node {node} CPU usage: {nodes_cpu_data[node]}")
             total_cpu_utilization += nodes_cpu_data[node] / 100

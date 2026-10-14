@@ -142,7 +142,7 @@ def closed_loop(controller):
             )
         else:
             e = reference_input - cur_cpu
-            u = controller.compute(e)
+            u = controller.compute(cur_cpu)
             logging.info(f"closed loop: e: {e}, u: {u}")
             new_max_pod = round(u)
             if new_max_pod >= max_max_pod:
@@ -251,6 +251,7 @@ if __name__ == "__main__":
     curr_node_index = int(args[1])
     if curr_node_index not in (0, 1, 2):
         print("Enter valid node index in the argument (0, 1 or 2)")
+        exit(0)
     
     current_node = nodes[curr_node_index]
 

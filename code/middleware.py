@@ -91,9 +91,9 @@ def get_node_cpu_capacity(node_name):
 
 @app.get("/get_all_nodes_cpu")
 async def get_all_nodes_cpu():
+    usage = {}
     try:
         print("line 1")
-        usage = {}
         api = client.CustomObjectsApi()
         print("line 2")
         k8s_nodes = api.list_cluster_custom_object("metrics.k8s.io", "v1beta1", "nodes")
@@ -129,7 +129,7 @@ async def add_node(request: Request):
             return {"success": False, "status": "Node already exists"}
         else:
             # Other API exceptions
-            raise {"success": False, "status": "unknown exception occured"}
+            return {"success": False, "status": f"unknown exception occured: {e}"}
 
 @app.post("/add_pod")
 async def add_pod(request: Request):
@@ -180,10 +180,10 @@ async def kill_node(request: Request):
         print("hello inside kill node after deleting node")
     except Exception as e:
         print("hello inside kill node: exception in kill node", e)
-        return {"success": False, "error": e}
-    return {"sucess": True, "error": None}
+        return {"success": False, "error": str(e)}
+    return {"success": True, "error": None}
 
-@app.post("kill_pod")
+@app.post("/kill_pod")
 async def kill_pod(request: Request):
     data = await request.json()
     pod_name = data.get("pod_name")
