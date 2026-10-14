@@ -40,23 +40,32 @@ An instance of local controller runs on each node. A local controller is used to
 It is the control center of the system, which exposes several APIs for both the controllers. It uses the Kubernetes APIs to measure node CPU utilisation, cluster wide CPU utilisation, number of active nodes, number of pods running in a cluster, etc.
 
 ## Important Notes:
-1. This project is designed to be used for 3 nodes. If more nodes are required make necessary changes in global_controller.py  
+1. This project is designed to be used for 3 nodes. If more nodes are required, add them to `code/settings.py` and update `worker_indices` in `code/global_controller.py`  
 2. Nodes will be called as node0, node1 and node2. Node0 is the master node and node1 and node2 are worker nodes. To run pods within the master node remove the blocking taint  
 
 ## Installation steps:
-Clone the repo in all three nodes. To install the pre-requisites, run the makefile on all the nodes.
+Clone the repo in all three nodes. To install the pre-requisites, run the following on all the nodes:  
+`make install_prerequisites`
 
-In the master node, initialise the Kubernetes cluster by running the "kubeadm init" command.
+In the master node, initialise the Kubernetes cluster (the pod network range is required by Flannel):  
+`sudo kubeadm init --pod-network-cidr=10.244.0.0/16`
 
-**Install callico**  
-Callico is needed to provide secure network connectivity among the nodes. Install by running the following command:  
-`kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml --validate=false`
+**Install Flannel:**  
+Flannel is needed to provide network connectivity among the pods across nodes. Install by running the following command:  
+`kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml`
 
 **Install metrics-server:**  
 metrics-server is needed to fetch resource usage monitoring (CPU, memory) details for Kubernetes nodes. Install by running the following command:  
 `kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml --validate=false`
 
+**Configure the cluster:**  
+Edit `code/settings.py` on all three nodes:
+- `NODES`: the node names exactly as shown by `kubectl get nodes` (master first)
+- `NODE_IPS`: the IP address of each node, in the same order
+
 ## Simulation steps:
+Run all of the following commands from the `code` directory (`cd code`).
+
 **Step 1: start the middleware**  
 Run the following command on master node:  
 `uvicorn middleware:app --host 0.0.0.0 --port 6666`
