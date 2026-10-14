@@ -72,10 +72,8 @@ def add_pod(job_des, node):
         payload = {"job": job_des, "node_hostname": node}
         cur_pod_id += 1
         response = requests.post(add_pod_url, json=payload)
-        print("finddddddd 1", response, response.status_code)
         if response.status_code == 200:
             res = response.json()
-            print("finddddddd 2", res, res.get("success"), res.get("msg"))
             return res.get("success"), res.get("msg")
         else:
             return False, f"Error: {response.status_code}"
@@ -223,9 +221,7 @@ async def handle_post(request: Request):
             }
 
         logging.info(f"Current pod num: {cur_pod_num}, scheduling job {job_description}")
-        print("finddddddd -1", job_description, node)
         ok, msg = add_pod(job_description, node)
-        print("finddddddd 3", ok, msg)
         if not ok:
             logging.error(f"Error when trying to run job: {msg}")
             return {"success": False, "msg": f"Error trying to start new job, err: {msg}"}

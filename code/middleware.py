@@ -93,12 +93,8 @@ def get_node_cpu_capacity(node_name):
 async def get_all_nodes_cpu():
     usage = {}
     try:
-        print("line 1")
         api = client.CustomObjectsApi()
-        print("line 2")
         k8s_nodes = api.list_cluster_custom_object("metrics.k8s.io", "v1beta1", "nodes")
-        print("line 3: ")
-        print(k8s_nodes)
         for stats in k8s_nodes["items"]:
             node_name = stats["metadata"]["name"]
             cpu_usage_nanoseconds = int(stats["usage"]["cpu"].rstrip("n"))
@@ -106,8 +102,7 @@ async def get_all_nodes_cpu():
             if cpu_capacity_nanocores:
                 usage[node_name] = (cpu_usage_nanoseconds / cpu_capacity_nanocores) * 100
     except Exception as e:
-        print("Errrror")
-        print(e)
+        logging.error(f"Error getting node CPU usage: {e}")
     return usage
 
 @app.post("/add_node")
@@ -172,14 +167,12 @@ async def kill_node(request: Request):
     node_name = str(data.get("node_name"))
     api_instance = client.CoreV1Api()
 
-    print("hello inside kill node", node_name)
     delete_all_pods_in_node(node_name, api_instance)
-    print("hello inside kill node after deleting all pods")
     try:
         api_instance.delete_node(node_name)
-        print("hello inside kill node after deleting node")
+        logging.info(f"Removed node {node_name}")
     except Exception as e:
-        print("hello inside kill node: exception in kill node", e)
+        logging.error(f"Error removing node {node_name}: {e}")
         return {"success": False, "error": str(e)}
     return {"success": True, "error": None}
 
