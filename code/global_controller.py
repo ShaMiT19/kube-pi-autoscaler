@@ -4,15 +4,15 @@ import requests
 import logging
 from datetime import datetime
 from fastapi import FastAPI, Request
-import config
+import settings
 
-nodes = config.NODES
+nodes = settings.NODES
 
-fetch_all_nodes_url = config.MIDDLEWARE_URL + "/fetch_all_nodes"
-add_node_url = config.MIDDLEWARE_URL + "/add_node"
-kill_node_url = config.MIDDLEWARE_URL + "/kill_node"
-get_all_nodes_cpu_url = config.MIDDLEWARE_URL + "/get_all_nodes_cpu"
-get_num_of_pods_url = config.MIDDLEWARE_URL + "/get_num_of_pods"
+fetch_all_nodes_url = settings.MIDDLEWARE_URL + "/fetch_all_nodes"
+add_node_url = settings.MIDDLEWARE_URL + "/add_node"
+kill_node_url = settings.MIDDLEWARE_URL + "/kill_node"
+get_all_nodes_cpu_url = settings.MIDDLEWARE_URL + "/get_all_nodes_cpu"
+get_num_of_pods_url = settings.MIDDLEWARE_URL + "/get_num_of_pods"
 
 # settings
 sampling_time = 1
@@ -20,7 +20,7 @@ scaling_sleep_time = 2
 master_index = 0
 worker_indices = [1, 2]
 
-node_url = config.LOCAL_CONTROLLER_URLS
+node_url = settings.LOCAL_CONTROLLER_URLS
 
 node_job_api = {
     nodes[0]: node_url[nodes[0]] + "job",

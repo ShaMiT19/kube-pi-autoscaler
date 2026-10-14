@@ -1,5 +1,5 @@
 import subprocess
-import config
+import settings
 
 try:
     # remove all log files
@@ -16,7 +16,7 @@ try:
     print("all pods deleted")
 
     # remove all worker nodes
-    for worker in config.NODES[1:]:
+    for worker in settings.NODES[1:]:
         print(f"deleting {worker}")
         command = f"kubectl delete node {worker}"
         result = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)

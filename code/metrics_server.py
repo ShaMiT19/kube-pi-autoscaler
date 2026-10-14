@@ -1,10 +1,10 @@
 import subprocess
 import time
 import json
-import config
+import settings
 
 sampling_rate = 5
-nodes = config.NODES
+nodes = settings.NODES
 node = -1
 
 def get_node_capacity(node_name):

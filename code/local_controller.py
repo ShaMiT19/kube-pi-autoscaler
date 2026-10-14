@@ -7,9 +7,9 @@ from datetime import datetime
 import requests
 import math
 import sys
-import config
+import settings
 
-nodes = config.NODES
+nodes = settings.NODES
 
 app = FastAPI()
 
@@ -39,9 +39,9 @@ CPU_data = []
 max_pod_data = []
 controller_running = False
 
-get_all_nodes_cpu_url = config.MIDDLEWARE_URL + "/get_all_nodes_cpu"
-get_num_of_pods_url = config.MIDDLEWARE_URL + "/get_num_of_pods"
-add_pod_url = config.MIDDLEWARE_URL + "/add_pod"
+get_all_nodes_cpu_url = settings.MIDDLEWARE_URL + "/get_all_nodes_cpu"
+get_num_of_pods_url = settings.MIDDLEWARE_URL + "/get_num_of_pods"
+add_pod_url = settings.MIDDLEWARE_URL + "/add_pod"
 
 def get_all_nodes_cpu(node_name):
     try:
@@ -261,4 +261,4 @@ if __name__ == "__main__":
     closed_loop_thread.start()
 
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=config.LOCAL_CONTROLLER_PORT)
+    uvicorn.run(app, host="0.0.0.0", port=settings.LOCAL_CONTROLLER_PORT)
