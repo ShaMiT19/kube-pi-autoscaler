@@ -10,9 +10,10 @@ from fastapi.responses import JSONResponse
 from kubernetes import client, config
 from kubernetes.client.rest import ApiException
 import json
+import config
 
 app = FastAPI()
-nodes = ["node0", "node1.harshproject.ufl-eel6871-fa24-pg0.utah.cloudlab.us", "node2.harshproject.ufl-eel6871-fa24-pg0.utah.cloudlab.us"]
+nodes = config.NODES
 
 try:
     # If running inside a cluster

@@ -4,14 +4,15 @@ import requests
 import logging
 from datetime import datetime
 from fastapi import FastAPI, Request
+import config
 
-nodes = ["node0", "node1.harshproject.ufl-eel6871-fa24-pg0.utah.cloudlab.us", "node2.harshproject.ufl-eel6871-fa24-pg0.utah.cloudlab.us"]
+nodes = config.NODES
 
-fetch_all_nodes_url = "http://127.0.0.1:6666/fetch_all_nodes"
-add_node_url = "http://127.0.0.1:6666/add_node"
-kill_node_url = "http://127.0.0.1:6666/kill_node"
-get_all_nodes_cpu_url = "http://127.0.0.1:6666/get_all_nodes_cpu"
-get_num_of_pods_url = "http://127.0.0.1:6666/get_num_of_pods"
+fetch_all_nodes_url = config.MIDDLEWARE_URL + "/fetch_all_nodes"
+add_node_url = config.MIDDLEWARE_URL + "/add_node"
+kill_node_url = config.MIDDLEWARE_URL + "/kill_node"
+get_all_nodes_cpu_url = config.MIDDLEWARE_URL + "/get_all_nodes_cpu"
+get_num_of_pods_url = config.MIDDLEWARE_URL + "/get_num_of_pods"
 
 # settings
 sampling_time = 1
@@ -19,11 +20,7 @@ scaling_sleep_time = 2
 master_index = 0
 worker_indices = [1, 2]
 
-node_url = {
-    nodes[0]: "http://127.0.0.1:6667/",
-    nodes[1]: "http://128.110.217.125:6667/",
-    nodes[2]: "http://128.110.217.128:6667/",
-}
+node_url = config.LOCAL_CONTROLLER_URLS
 
 node_job_api = {
     nodes[0]: node_url[nodes[0]] + "job",
@@ -45,8 +42,8 @@ job_assign_interval = 15
 jobs_file_name = "jobs.txt"
 
 clusterwide_cpu = []  # recent cluster CPU usage
-started_nodes = ["node0"]
-worker_nodes = ["node1.harshproject.ufl-eel6871-fa24-pg0.utah.cloudlab.us", "node2.harshproject.ufl-eel6871-fa24-pg0.utah.cloudlab.us"]
+started_nodes = [nodes[master_index]]
+worker_nodes = [nodes[i] for i in worker_indices]
 last_started_time = datetime.now()
 job_list = []
 
@@ -374,7 +371,7 @@ if __name__ == "__main__":
     # to reduce log noise from requests APIs
     logging.getLogger("urllib3.connectionpool").setLevel(logging.WARNING)
 
-    ok, msg = start_controller("node0")
+    ok, msg = start_controller(nodes[master_index])
     if not ok:
         logging.error(f"error when starting the master node controller, error: {msg}")
     else:

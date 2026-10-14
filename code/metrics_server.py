@@ -1,9 +1,10 @@
 import subprocess
 import time
 import json
+import config
 
 sampling_rate = 5
-nodes = ["node0", "node1.harshproject.ufl-eel6871-fa24-pg0.utah.cloudlab.us", "node2.harshproject.ufl-eel6871-fa24-pg0.utah.cloudlab.us"]
+nodes = config.NODES
 node = -1
 
 def get_node_capacity(node_name):

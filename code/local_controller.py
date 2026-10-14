@@ -7,8 +7,9 @@ from datetime import datetime
 import requests
 import math
 import sys
+import config
 
-nodes = ["node0", "node1.harshproject.ufl-eel6871-fa24-pg0.utah.cloudlab.us", "node2.harshproject.ufl-eel6871-fa24-pg0.utah.cloudlab.us"]
+nodes = config.NODES
 
 app = FastAPI()
 
@@ -25,7 +26,7 @@ pi_ki = 3.1406
 sampling_rate = 5
 reference_input = 0.8
 job_list = []
-node_name = "node0"
+node_name = nodes[0]
 cur_pod_id = 0
 max_max_pod = 12
 job_delay = 15
@@ -38,9 +39,9 @@ CPU_data = []
 max_pod_data = []
 controller_running = False
 
-get_all_nodes_cpu_url = "http://128.110.217.116:6666/get_all_nodes_cpu"
-get_num_of_pods_url = "http://128.110.217.116:6666/get_num_of_pods"
-add_pod_url = "http://128.110.217.116:6666/add_pod"
+get_all_nodes_cpu_url = config.MIDDLEWARE_URL + "/get_all_nodes_cpu"
+get_num_of_pods_url = config.MIDDLEWARE_URL + "/get_num_of_pods"
+add_pod_url = config.MIDDLEWARE_URL + "/add_pod"
 
 def get_all_nodes_cpu(node_name):
     try:
@@ -263,4 +264,4 @@ if __name__ == "__main__":
     closed_loop_thread.start()
 
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=6667)
+    uvicorn.run(app, host="0.0.0.0", port=config.LOCAL_CONTROLLER_PORT)

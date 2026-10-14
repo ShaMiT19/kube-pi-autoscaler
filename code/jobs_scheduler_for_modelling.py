@@ -2,6 +2,7 @@ import time
 from node import Node
 import middleware
 import random
+import config
 
 def parse_args(job):
     elements = job.split()
@@ -28,7 +29,7 @@ def read_jobs(file_path):
 def main(no_of_pods):
     
     # Initialize nodes
-    node1 = Node("node1", "node1.harshproject.ufl-eel6871-fa24-pg0.utah.cloudlab.us")
+    node1 = Node("node1", config.NODES[1])
 
     # activate node1
     # system will be modelled on the basis of a single node, which is node1. Same model will be used for node0 and node1, since all nodes are identical
