@@ -62,6 +62,7 @@ metrics-server is needed to fetch resource usage monitoring (CPU, memory) detail
 Edit `code/settings.py` on all three nodes:
 - `NODES`: the node names exactly as shown by `kubectl get nodes` (master first)
 - `NODE_IPS`: the IP address of each node, in the same order
+- `REFERENCE_INPUT`, `PI_KP`, `PI_KI`, `LOCAL_SAMPLING_RATE`, `MAX_PODS_LIMIT` (optional): the target CPU utilisation and controller tuning values
 
 ## Simulation steps:
 Run all of the following commands from the `code` directory (`cd code`).

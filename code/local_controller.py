@@ -20,15 +20,15 @@ logging.basicConfig(
     #filename='lc_logfile.log'
 )
 
-pi_kp = -3.127
-pi_ki = 3.1406
+pi_kp = settings.PI_KP
+pi_ki = settings.PI_KI
 
-sampling_rate = 5
-reference_input = 0.8
+sampling_rate = settings.LOCAL_SAMPLING_RATE
+reference_input = settings.REFERENCE_INPUT
 job_list = []
 node_name = nodes[0]
 cur_pod_id = 0
-max_max_pod = 12
+max_max_pod = settings.MAX_PODS_LIMIT
 job_delay = 15
 read_jobs = False
 last_pod_start_time = None

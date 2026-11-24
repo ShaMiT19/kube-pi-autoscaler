@@ -34,7 +34,7 @@ node_pod_api = {
     nodes[2]: node_url[nodes[2]] + "pod-num",
 }
 
-reference_input = 0.8
+reference_input = settings.REFERENCE_INPUT
 prev_cpu_to_consider = 2
 node_start_delay = (30)
 

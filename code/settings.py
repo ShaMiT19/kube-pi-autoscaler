@@ -18,3 +18,10 @@ MIDDLEWARE_URL = f"http://{MASTER_IP}:{MIDDLEWARE_PORT}"
 LOCAL_CONTROLLER_URLS = {
     node: f"http://{ip}:{LOCAL_CONTROLLER_PORT}/" for node, ip in zip(NODES, NODE_IPS)
 }
+
+# Controller tuning
+REFERENCE_INPUT = 0.8      # target CPU utilisation (80%), shared by both controllers
+PI_KP = -3.127             # PI controller proportional gain
+PI_KI = 3.1406             # PI controller integral gain
+LOCAL_SAMPLING_RATE = 5    # seconds between local controller decisions
+MAX_PODS_LIMIT = 12        # upper bound for MAXPODS on a node
